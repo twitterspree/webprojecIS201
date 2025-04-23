@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Match Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .scoreboard {
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            max-width: 600px;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .player {
+            text-align: center;
+        }
+        .player img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+        .log {
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #f9f9f9;
+            text-align: left;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tennis Match Simulator</h1>
+    <div class="scoreboard">
+        <div class="player">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Novak_Djokovic_2019.jpg" alt="Novak Djokovic">
+            <p id="player1-name">Novak Djokovic</p>
+            <p id="player1-score">0</p>
+        </div>
+        <div class="player">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Rafael_Nadal_2016.jpg" alt="Rafael Nadal">
+            <p id="player2-name">Rafael Nadal</p>
+            <p id="player2-score">0</p>
+        </div>
+    </div>
+    <button onclick="playPoint()">Play Point</button>
+    <button onclick="resetMatch()">Reset Match</button>
+    <div class="log" id="log"></div>
+
+    <script>
+        // Players
+        const player1 = "Novak Djokovic";
+        const player2 = "Rafael Nadal";
+
+        // Scores
+        let player1Points = 0;
+        let player2Points = 0;
+        let player1Games = 0;
+        let player2Games = 0;
+
+        // Match log
+        const logElement = document.getElementById("log");
+
+        // Tennis scoring system
+        const pointValues = ["0", "15", "30", "40", "Advantage"];
+
+        // Update the scoreboard
+        function updateScoreboard() {
+            const player1ScoreElement = document.getElementById("player1-score");
+            const player2ScoreElement = document.getElementById("player2-score");
+
+            if (player1Points >= 4 && player1Points - player2Points >= 2) {
+                player1Games++;
+                logEvent(`${player1} wins the game!`);
+                resetPoints();
+            } else if (player2Points >= 4 && player2Points - player1Points >= 2) {
+                player2Games++;
+                logEvent(`${player2} wins the game!`);
+                resetPoints();
+            }
+
+            if (player1Games >= 6 && player1Games - player2Games >= 2) {
+                logEvent(`${player1} wins the match!`);
+                disableButtons();
+            } else if (player2Games >= 6 && player2Games - player1Games >= 2) {
+                logEvent(`${player2} wins the match!`);
+                disableButtons();
+            }
+
+            player1ScoreElement.textContent = `${pointValues[player1Points] || "0"} (${player1Games})`;
+            player2ScoreElement.textContent = `${pointValues[player2Points] || "0"} (${player2Games})`;
+        }
+
+        // Log match events
+        function logEvent(event) {
+            const logEntry = document.createElement("p");
+            logEntry.textContent = event;
+            logElement.appendChild(logEntry);
+            logElement.scrollTop = logElement.scrollHeight; // Auto-scroll to the bottom
+        }
+
+        // Play a single point
+        function playPoint() {
+            const winner = Math.random() < 0.5 ? player1 : player2; // Randomize winner
+            if (winner === player1) {
+                player1Points++;
+            } else {
+                player2Points++;
+            }
+
+            logEvent(`${winner} wins the point!`);
+            updateScoreboard();
+        }
+
+        // Reset points after a game
+        function resetPoints() {
+            player1Points = 0;
+            player2Points = 0;
+        }
+
+        // Reset the match
+        function resetMatch() {
+            player1Points = 0;
+            player2Points = 0;
+            player1Games = 0;
+            player2Games = 0;
+            logElement.innerHTML = ""; // Clear the log
+            updateScoreboard();
+            enableButtons();
+        }
+
+        // Disable buttons after match ends
+        function disableButtons() {
+            document.querySelector("button[onclick='playPoint()']").disabled = true;
+        }
+
+        // Enable buttons for a new match
+        function enableButtons() {
+            document.querySelector("button[onclick='playPoint()']").disabled = false;
+        }
+
+        // Initialize the scoreboard
+        updateScoreboard();
+    </script>
+</body>
+</html>

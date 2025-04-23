@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Tournament Bracket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #87CEEB, #4CAF50);
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .bracket {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .round {
+            margin: 0 20px;
+        }
+        .match {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            position: relative;
+            opacity: 0; /* Start hidden for animation */
+            transform: translateY(20px); /* Start slightly below */
+            transition: all 0.5s ease; /* Smooth animation */
+        }
+        .match.visible {
+            opacity: 1; /* Fade in */
+            transform: translateY(0); /* Move to original position */
+        }
+        .match:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        .match span {
+            display: block;
+            font-size: 14px;
+            color: #fff;
+        }
+        button {
+            background-color: #ffffff;
+            color: #333;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        button:hover {
+            background-color: #dfdfdf;
+        }
+        #winner {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            animation: flash 1s infinite alternate;
+        }
+        @keyframes flash {
+            from {
+                color: #FFD700;
+            }
+            to {
+                color: #FF4500;
+            }
+        }
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Buttons -->
+    <div style="position: absolute; top: 10px; left: 10px;">
+        <button onclick="goToScratchPage()" style="margin-right: 10px;">Scratch Page</button>
+        <button onclick="goHome()">Home</button>
+    </div>
+
+    <h1>Tennis Tournament Bracket</h1>
+    <div>
+        <input type="text" id="playerInput" placeholder="Enter player names (comma-separated) (groups of 2,4,8, or 16)" style="width: 80%; padding: 10px;">
+        <button onclick="generateBracket()">Generate Bracket</button>
+        <button onclick="resetBracket()">Reset Bracket</button>
+    </div>
+    <div id="bracket" class="bracket"></div>
+    <h2 id="winner" style="margin-top: 20px;"></h2>
+    <canvas id="confetti" class="confetti"></canvas>
+
+    <script>
+        function goToScratchPage() {
+            // Replace with the actual URL of your scratch page
+            window.location.href = "scratch.html";
+        }
+
+        function goHome() {
+            // Replace with the actual URL of your home page
+            window.location.href = "index.html";
+        }
+
+        function generateBracket() {
+            const input = document.getElementById("playerInput").value;
+            const players = input.split(",").map(name => name.trim());
+            if (players.length < 2 || (players.length & (players.length - 1)) !== 0) {
+                alert("Please enter 2, 4, 8, or 16 players.");
+                return;
+            }
+
+            // Initialize the first round with player objects
+            let rounds = [
+                players.map(player => ({ winner: player, score: "TBD" }))
+            ];
+
+            // Generate subsequent rounds
+            while (rounds[rounds.length - 1].length > 1) {
+                const previousRound = rounds[rounds.length - 1];
+                const nextRound = [];
+                for (let i = 0; i < previousRound.length; i += 2) {
+                    const player1 = previousRound[i].winner;
+                    const player2 = previousRound[i + 1].winner;
+                    const { winner, score } = generateTennisSet(player1, player2);
+                    nextRound.push({ winner, score });
+                }
+                rounds.push(nextRound);
+            }
+
+            displayBracket(rounds);
+        }
+
+        // Function to generate realistic tennis set scores
+        function generateTennisSet(player1, player2) {
+            let player1Games = 0;
+            let player2Games = 0;
+
+            // Simulate the set
+            while (true) {
+                if (player1Games >= 6 && player1Games - player2Games >= 2) {
+                    return { winner: player1, score: `${player1Games}-${player2Games}` };
+                } else if (player2Games >= 6 && player2Games - player1Games >= 2) {
+                    return { winner: player2, score: `${player1Games}-${player2Games}` };
+                }
+
+                // Randomly decide who wins the next game
+                if (Math.random() < 0.5) {
+                    player1Games++;
+                } else {
+                    player2Games++;
+                }
+            }
+        }
+
+        function displayBracket(rounds) {
+            const bracketDiv = document.getElementById("bracket");
+            bracketDiv.innerHTML = "";
+            rounds.forEach((round, roundIndex) => {
+                const roundDiv = document.createElement("div");
+                roundDiv.className = "round";
+                roundDiv.innerHTML = `<h3>Round ${roundIndex + 1}</h3>`;
+                round.forEach((match, matchIndex) => {
+                    const matchDiv = document.createElement("div");
+                    matchDiv.className = "match";
+                    matchDiv.innerHTML = `
+                        <strong>${match.winner}</strong>
+                        <span>Score: ${match.score || "TBD"}</span>
+                    `;
+                    roundDiv.appendChild(matchDiv);
+
+                    setTimeout(() => {
+                        matchDiv.classList.add("visible");
+                    }, matchIndex * 200);
+                });
+                bracketDiv.appendChild(roundDiv);
+            });
+
+            const winner = rounds[rounds.length - 1][0].winner;
+            document.getElementById("winner").textContent = `Winner: ${winner}`;
+            startConfetti();
+        }
+
+        function resetBracket() {
+            document.getElementById("playerInput").value = "";
+            document.getElementById("bracket").innerHTML = "";
+            document.getElementById("winner").textContent = "";
+            stopConfetti();
+        }
+
+        // Confetti animation
+        const confettiCanvas = document.getElementById("confetti");
+        const confettiCtx = confettiCanvas.getContext("2d");
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+
+        let confettiParticles = [];
+        function startConfetti() {
+            confettiParticles = Array.from({ length: 100 }, () => ({
+                x: Math.random() * confettiCanvas.width,
+                y: Math.random() * confettiCanvas.height,
+                r: Math.random() * 6 + 2,
+                dx: Math.random() * 2 - 1,
+                dy: Math.random() * 2 + 1,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`
+            }));
+            requestAnimationFrame(updateConfetti);
+        }
+
+        function updateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiParticles.forEach(p => {
+                confettiCtx.beginPath();
+                confettiCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                confettiCtx.fillStyle = p.color;
+                confettiCtx.fill();
+                p.x += p.dx;
+                p.y += p.dy;
+                if (p.y > confettiCanvas.height) p.y = 0;
+            });
+            requestAnimationFrame(updateConfetti);
+        }
+
+        function stopConfetti() {
+            confettiParticles = [];
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+        }
+    </script>
+</body>
+</html>

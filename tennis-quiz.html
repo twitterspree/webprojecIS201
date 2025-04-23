@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Trivia Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .quiz-container {
+            margin: 20px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            max-width: 600px;
+            background-color: #fff;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .question {
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .options button {
+            display: block;
+            margin: 10px auto;
+            width: 80%;
+        }
+        .result {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tennis Trivia Quiz</h1>
+    <div class="quiz-container">
+        <p id="question" class="question">Click "Start Quiz" to begin!</p>
+        <div id="options" class="options"></div>
+        <button id="next-btn" onclick="nextQuestion()" style="display: none;">Next Question</button>
+        <p id="result" class="result"></p>
+        <button id="start-btn" onclick="startQuiz()">Start Quiz</button>
+    </div>
+    <a href="scratch.html" style="display: inline-block; margin-top: 20px; text-decoration: none; color: white; background-color: #333; padding: 10px 20px; border-radius: 5px;">Back to Scratch Page</a>
+
+    <script>
+        const questions = [
+            {
+                question: "Who has won the most Grand Slam titles in tennis history?",
+                options: ["Roger Federer", "Rafael Nadal", "Novak Djokovic", "Pete Sampras"],
+                answer: "Novak Djokovic"
+            },
+            {
+                question: "What is the name of the tournament played on grass courts?",
+                options: ["French Open", "Wimbledon", "US Open", "Australian Open"],
+                answer: "Wimbledon"
+            },
+            {
+                question: "How many Grand Slam titles has Novak Djokovic won?",
+                options: ["20", "22", "24", "26"],
+                answer: "24"
+            },
+            {
+                question: "What is the maximum number of sets in a men's Grand Slam match?",
+                options: ["3", "4", "5", "6"],
+                answer: "5"
+            },
+            {
+                question: "Which country hosts the French Open?",
+                options: ["Spain", "France", "Italy", "Germany"],
+                answer: "France"
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            document.getElementById("result").textContent = "";
+            document.getElementById("start-btn").style.display = "none";
+            document.getElementById("next-btn").style.display = "inline-block";
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById("question").textContent = question.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            question.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => checkAnswer(option);
+                optionsDiv.appendChild(button);
+            });
+        }
+
+        function checkAnswer(selectedOption) {
+            const question = questions[currentQuestionIndex];
+            if (selectedOption === question.answer) {
+                score++;
+                alert("Correct!");
+            } else {
+                alert(`Wrong! The correct answer is: ${question.answer}`);
+            }
+            document.getElementById("next-btn").style.display = "inline-block";
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            document.getElementById("question").textContent = "Quiz Over!";
+            document.getElementById("options").innerHTML = "";
+            document.getElementById("next-btn").style.display = "none";
+            document.getElementById("start-btn").style.display = "inline-block";
+            document.getElementById("result").textContent = `Your score: ${score}/${questions.length}`;
+        }
+    </script>
+</body>
+</html>

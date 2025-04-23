@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Stats Visualizer</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        canvas {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tennis Stats Visualizer</h1>
+    <canvas id="grandSlamChart"></canvas>
+    <canvas id="surfaceWinChart"></canvas>
+    <canvas id="headToHeadChart"></canvas>
+
+    <script>
+        // Grand Slam Titles Chart
+        const grandSlamCtx = document.getElementById('grandSlamChart').getContext('2d');
+        new Chart(grandSlamCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Novak Djokovic', 'Rafael Nadal', 'Roger Federer'],
+                datasets: [{
+                    label: 'Grand Slam Titles',
+                    data: [24, 22, 20],
+                    backgroundColor: ['#4CAF50', '#FF4500', '#1E90FF']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    title: { display: true, text: 'Grand Slam Titles' }
+                }
+            }
+        });
+
+        // Surface Win Percentages Chart
+        const surfaceWinCtx = document.getElementById('surfaceWinChart').getContext('2d');
+        new Chart(surfaceWinCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Grass', 'Clay', 'Hard Court'],
+                datasets: [{
+                    label: 'Win Percentage',
+                    data: [85, 80, 90], // Example data for Novak Djokovic
+                    backgroundColor: ['#228B22', '#D2691E', '#87CEEB']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    title: { display: true, text: 'Novak Djokovic Win Percentage by Surface' }
+                }
+            }
+        });
+
+        // Head-to-Head Chart
+        const headToHeadCtx = document.getElementById('headToHeadChart').getContext('2d');
+        new Chart(headToHeadCtx, {
+            type: 'line',
+            data: {
+                labels: ['2010', '2012', '2014', '2016', '2018', '2020', '2022'],
+                datasets: [
+                    {
+                        label: 'Djokovic vs Nadal',
+                        data: [2, 4, 6, 8, 10, 12, 15],
+                        borderColor: '#4CAF50',
+                        fill: false
+                    },
+                    {
+                        label: 'Djokovic vs Federer',
+                        data: [3, 5, 7, 9, 11, 13, 16],
+                        borderColor: '#1E90FF',
+                        fill: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true },
+                    title: { display: true, text: 'Head-to-Head Wins Over Time' }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Year' } },
+                    y: { title: { display: true, text: 'Wins' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis Tournament Bracket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        .bracket {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .round {
+            margin: 0 20px;
+        }
+        .match {
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #fff;
+            position: relative;
+            opacity: 0; /* Start hidden for animation */
+            transform: translateY(20px); /* Start slightly below */
+            transition: all 0.5s ease; /* Smooth animation */
+        }
+        .match.visible {
+            opacity: 1; /* Fade in */
+            transform: translateY(0); /* Move to original position */
+        }
+        .match span {
+            display: block;
+            font-size: 14px;
+            color: #555;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tennis Tournament Bracket</h1>
+    <div>
+        <input type="text" id="playerInput" placeholder="Enter player names (comma-separated)" style="width: 80%; padding: 10px;">
+        <button onclick="generateBracket()">Generate Bracket</button>
+        <button onclick="resetBracket()">Reset Bracket</button>
+    </div>
+    <div id="bracket" class="bracket"></div>
+    <h2 id="winner" style="margin-top: 20px;"></h2>
+
+    <script>
+        function generateBracket() {
+            const input = document.getElementById("playerInput").value;
+            const players = input.split(",").map(name => name.trim());
+            if (players.length < 2 || (players.length & (players.length - 1)) !== 0) {
+                alert("Please enter 2, 4, 8, or 16 players.");
+                return;
+            }
+
+            // Initialize the first round with player objects and random scores
+            let rounds = [
+                players.map((player, index) => {
+                    const opponentIndex = index % 2 === 0 ? index + 1 : index - 1;
+                    const score = opponentIndex >= 0 && opponentIndex < players.length
+                        ? `${Math.floor(Math.random() * 7 + 1)}-${Math.floor(Math.random() * 7 + 1)}`
+                        : "TBD";
+                    return { winner: player, score };
+                })
+            ];
+
+            // Generate subsequent rounds
+            while (rounds[rounds.length - 1].length > 1) {
+                const previousRound = rounds[rounds.length - 1];
+                const nextRound = [];
+                for (let i = 0; i < previousRound.length; i += 2) {
+                    const player1 = previousRound[i].winner;
+                    const player2 = previousRound[i + 1].winner;
+                    const winner = Math.random() < 0.5 ? player1 : player2;
+                    const score = `${Math.floor(Math.random() * 7 + 1)}-${Math.floor(Math.random() * 7 + 1)}`;
+                    nextRound.push({ winner, score });
+                }
+                rounds.push(nextRound);
+            }
+
+            displayBracket(rounds);
+        }
+
+        function displayBracket(rounds) {
+            const bracketDiv = document.getElementById("bracket");
+            bracketDiv.innerHTML = "";
+            rounds.forEach((round, roundIndex) => {
+                const roundDiv = document.createElement("div");
+                roundDiv.className = "round";
+                roundDiv.innerHTML = `<h3>Round ${roundIndex + 1}</h3>`;
+                round.forEach((match, matchIndex) => {
+                    const matchDiv = document.createElement("div");
+                    matchDiv.className = "match";
+                    matchDiv.innerHTML = `
+                        <strong>${match.winner}</strong>
+                        <span>Score: ${match.score || "TBD"}</span>
+                    `;
+                    roundDiv.appendChild(matchDiv);
+
+                    // Add animation delay for each match
+                    setTimeout(() => {
+                        matchDiv.classList.add("visible");
+                    }, matchIndex * 200); // Stagger animations
+                });
+                bracketDiv.appendChild(roundDiv);
+            });
+
+            const winner = rounds[rounds.length - 1][0].winner;
+            document.getElementById("winner").textContent = `Winner: ${winner}`;
+        }
+
+        function resetBracket() {
+            document.getElementById("playerInput").value = "";
+            document.getElementById("bracket").innerHTML = "";
+            document.getElementById("winner").textContent = "";
+        }
+    </script>
+</body>
+</html>
