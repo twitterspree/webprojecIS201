@@ -9,31 +9,30 @@
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-        <link href="css/customstyles.css" rel="stylesheet" />
+        <link href="bootstrapFolder/css/styles.css" rel="stylesheet" />
+        <link href="bootstrapFolder/css/customstyles.css" rel="stylesheet" />
     </head>
     <body>
         <!-- Responsive navbar-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="../index.html">Jason Wride</a>
+                <a class="navbar-brand" href="#!">Jason Wride</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" aria-current="page" href="../index.html">Home</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#!">Resume</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../tennis-bracket2.html">Tennis Bracket Sim</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../scratch.html">Novak (scratch page)</a></li>
-                    </ul>
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="bootstrapFolder/resume.html">Resume</a></li>
+                        <li class="nav-item"><a class="nav-link" href="tennis-bracket2.html">Tennis Bracket Sim</a></li>
+                        <li class="nav-item"><a class="nav-link" href="scratch.html">Novak (scratch page)</a></li>
+                    </ul>   
                 </div>
             </div>
         </nav>
         <!-- Header - set the background image for the header in the line below-->
-        <header class="py-5 bg-image-full" style="background-image: url('https://images.unsplash.com/photo-1723572215980-2bc603c97001?q=80&w=3137&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')">
+        <header class="py-5 bg-image-full" style="background-image: url('https://images.unsplash.com/photo-1500964757637-c85e8a162699?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGxhbmRzY2FwZXxlbnwwfHwwfHx8MA%3D%3D')">
             <div class="text-center my-5">
-                <!-- <img class="img-fluid rounded-circle mb-4" id="mePicture" src="assets/imgs/me.png" alt="me" /> -->
+                <img class="img-fluid rounded-circle mb-4" id="mePicture" src="bootstrapFolder/assets/imgs/me.png" alt="me" />
                 <h1 class="text-white fs-3 fw-bolder">Jason Wride</h1>
-                <h2 class="text-white fw-bolder" id="bigResume">Resume</h2>
                 <p class="text-white-50 mb-0">College Student</p>
             </div>
         </header>
@@ -41,69 +40,30 @@
         <section class="py-5">
             <div class="container my-5">
                 <div class="row justify-content-center">
-                    <div class="col-lg-6">
-                        <ul>
-                            <li>
-                                <h2>Education</h2>
-                                <ul>
-                                    <p class="lead">Payson High School, Payson, UT</p>
-                                    <ul>
-                                        <li>Graduated: May 2024</li>
-                                        <li>GPA: 3.9</li>
-                                        <li>Honors: National Honor Society, AP Classes</li>
-                                        <li>Varsity Tennis Team</li>
-                                        <li>ACT Score: 34</li>
-                                </ul>
-                                <br>
-                                <p class="lead">Brigham Young University, Provo, UT</p>
-                                    <ul>
-                                        <li>Currently Enrolled</li>
-                                        <li>Planning on majoring in Information Systems</li>
-                                </ul>
-                                <br>
-                            </li>
-                            <li>
-                                <h2>Experience</h2>
-                                <ul>
-                                    <p class="lead">Photographer</p>
-                                    <ul>
-                                        <li>2023-Current</li>
-                                        <li>Taken pictures for many couples as well as PHS Tennis Team</li>
-                                    </ul>
-                                </ul>
-                                    <br>
-                                <ul>
-                                    <p class="lead">Computer Repair</p>
-                                    <ul>
-                                        <li>2022-2024</li>
-                                        <li>Worked on many computers in computer repair classes at the ALC</li>
-                                    </ul>
-                                </ul>
-                            </li>
-                            <br>
-                            <li>
-                                <h2>Skills</h2>
-                                <ul>
-                                    <li>Photography</li>
-                                    <li>Photo Editing</li>
-                                    <li>Video Editing</li>
-                                    <li>PC Building/Repair</li>
-                                    <li>Network Troubleshooting</li>
-                                    <li>Computer Troubleshooting</li>
-                                    <li>CompTIA A+ Certified</li>
-                                </ul>
-                            </li>
-                        </ul>
+                    <div class="col-lg-6 customHover">
+                        <a class="undecorate" href="bootstrapFolder/resume.html">
+                            <h2>Resume</h2>
+                            <p class="lead">Education, Experience, and Skills</p>
+                        </a>
                     </div>
                 </div>
                 <br>
                 <div class="row justify-content-center">
                     <div class="col-lg-6 customHover">
-
+                        <a class="undecorate" href="scratch.html">
+                            <h2>Novak Djokovic</h2>
+                            <p class="lead">All about my tennis opinion on the GOAT</p>
+                        </a>
                     </div>
                 </div>
                 <br>
-     
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 customHover">
+                        <a class="undecorate" href="tennis-bracket2.html">
+                            <h2>Tennis Bracket Simulator</h2>
+                            <p class="lead">Randomly simulate a tournament with players of your choosing</p>
+                        </a>   
+                    </div>
                 </div>
             </div>
         </section>
