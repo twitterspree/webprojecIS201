@@ -14,11 +14,18 @@ h2 {
     border-radius: 50%;
 }
 
+.undecorate {
+    text-decoration: none;
+    color: inherit;
+}
+.undecorate:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 .customHover {
     margin-top: 10px;
 }
-
-
 
 .customHover:hover {
     background-color: #575757;
